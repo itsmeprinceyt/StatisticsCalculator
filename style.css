@@ -89,7 +89,6 @@ a:visited{
     box-shadow: 0px 0px 10px rgba(0,0,0,0.8);
 }
 .data-box button{
-    background-color: red;
     height: 30px;
 }
 .title{
@@ -103,12 +102,11 @@ a:visited{
 }
 .select-button{
     padding: 5px 15px 5px 15px;
-    background: rgb(0,0,0);
-    background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(59,0,153,1) 100%);
+    background-color: rgb(25, 25, 25);
     color: white;
     border-style: none;
     border-radius: 4px;
-    box-shadow: 0px 0px 10px rgba(0,0,0,0.5);
+    box-shadow: 0px 0px 10px rgb(25, 25, 25,0.5);
     cursor: pointer;
     transition: all 0.15s ease;
 }

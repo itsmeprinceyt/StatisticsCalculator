@@ -3,6 +3,12 @@ const numbers = [];
 document.querySelector('.js-submit').addEventListener('click',()=>{
     takingValue();
 })
+document.querySelector('.js-enter-input').addEventListener('keydown', (event) =>{
+    if (event.key === 'Enter')
+    {
+        takingValue();
+    }
+})
 function takingValue(){
     const InputBar = document.querySelector('.js-enter-input');
     if ( InputBar.value === '')
@@ -18,8 +24,8 @@ function takingValue(){
 function PrintingValue(){
     let htmlBody = `
         <tr>
-            <td>S.R</td>
-            <td>X</td>
+            <th>S.R</th>
+            <th>X</th>
         </tr>`;
     numbers.forEach((value,index)=>{
         htmlBody += `
@@ -47,10 +53,15 @@ document.querySelector('.js-calculate').addEventListener('click',()=>{
     console.log(numbers)
     console.log(mean,totalNumber,totalSum)
     changeData(totalNumber,totalSum,mean);
+    document.querySelector('.result').style.opacity = 1;
 })
 function changeData(totalNumber,totalSum,mean)
 {
-    document.querySelector('.result').innerHTML = `Total Numbers: ${totalNumber}<br>Total Sum: ${totalSum}<br>Mean: ${mean}`;
+    document.querySelector('.result').innerHTML = `
+    <strong>Total Numbers: ${totalNumber}</strong>
+    <strong>Total Sum: ${totalSum}</strong>
+    <strong>Mean: ${mean}</strong>`;
+    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${mean}</strong>`;
 }
 document.querySelector('.header-title').addEventListener('click',()=>{
     window.open('../../../index.html',"_self");
