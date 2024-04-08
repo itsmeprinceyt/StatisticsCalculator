@@ -1,0 +1,19 @@
+.container{
+    position: relative;
+    padding: 20px;
+    border-radius: 10px;
+    top: 120px;
+    left: 50%;
+    width: 500px;
+    background-color: white;
+    transform: translate(-50%,-50%);
+}
+table td,tr{
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+@media (max-width: 786px){
+    .container{
+        margin:0 ;
+    }
+}
