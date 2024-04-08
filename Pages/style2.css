@@ -92,3 +92,19 @@ td{
         margin:0 ;
     }
 }
+@media (max-width: 595px)
+{
+    .container{
+        width: 350px;
+    }
+}
+@media (max-width: 438px)
+{
+    .topic-title
+    {
+        font-size: 16px;
+    }
+    .container{
+        width: 250px;
+    }
+}

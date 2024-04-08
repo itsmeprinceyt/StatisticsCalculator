@@ -50,8 +50,6 @@ document.querySelector('.js-calculate').addEventListener('click',()=>{
         totalSum += value;
     })
     let mean =  (((totalSum / totalNumber ) * 100 )/100).toFixed(2);
-    console.log(numbers)
-    console.log(mean,totalNumber,totalSum)
     changeData(totalNumber,totalSum,mean);
     document.querySelector('.result').style.opacity = 1;
 })

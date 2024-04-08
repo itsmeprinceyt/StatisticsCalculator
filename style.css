@@ -119,3 +119,21 @@ a:visited{
         grid-template-columns: 230px 230px;
     }
 }
+@media (max-width: 536px)
+{
+    .main1{
+        
+    }
+    .main1,
+    .main2,
+    .main3{
+        height: 350px;
+    grid-template-columns: 230px;
+}
+}
+@media (max-width: 377px)
+{
+    .main h1{
+        font-size: 13px;
+    }
+}
