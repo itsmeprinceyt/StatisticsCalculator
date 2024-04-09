@@ -16,13 +16,13 @@ function takeMeToNextPage(index)
     }else if(index === 2){
         window.open('disc-direct-method.html',"_self");
     }else if(index === 3){
-        window.open('Pages/IndividualData/directmethod.html',"_self");
+        window.open('404.html',"_self");
     }else if(index === 4){
-        window.open('Pages/IndividualData/directmethod.html',"_self");
+        window.open('404.html',"_self");
     }else if(index === 5){
-        window.open('Pages/IndividualData/directmethod.html',"_self");
+        window.open('404.html',"_self");
     }else if(index === 6){
-        window.open('Pages/IndividualData/directmethod.html',"_self");
+        window.open('404.html',"_self");
     }
 }
 // Home title navigates to index
