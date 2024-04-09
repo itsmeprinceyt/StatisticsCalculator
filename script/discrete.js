@@ -1,18 +1,20 @@
-// variables for storing list of numbers
-const numbers = [];
-// variable for storing dx
-const numbersDX = [];
-
+const numbers = []; // x
+const numbersF = []; // frequency
+const numbersFX = []; // fx
+const numbersDX = []; // dx
+const numbersFDX = []; // fdx
 
 //variables for storing result data
 let A = 0;
-let totalSum = 0;
-let totalSumDX = 0;
+let totalSumF = 0;
+let totalSumFX = 0;
+let totalSumFDX = 0;
 let totalNumber = 0;
-let meanDM = 0;
-let meanSM = 0;
+let meanD_DM = 0;
+let meanD_SM = 0;
 
 let EnterDisable = false;
+let counter = 0;
 // variable for storing the name of the file
 var url = window.location.pathname;
 var filename = url.substring(url.lastIndexOf('/')+1);
@@ -32,7 +34,7 @@ document.querySelector('.js-enter-input').addEventListener('keydown', (event) =>
 
 // Calculate button event listener
 document.querySelector('.js-calculate').addEventListener('click',()=>{
-    if(filename=== 'indi-direct-method.html')
+    if(filename=== 'disc-direct-method.html')
     {
         calculateDirectMethod();
     } else if(filename=== 'indi-shortcut-method.html')
@@ -47,24 +49,31 @@ document.querySelector('.js-clear-everything').addEventListener('click',()=>{
 })
 
 //Taking Value from input
-function takingValue(){
-    if(EnterDisable=== true)
-    {
+function takingValue() {
+    if (EnterDisable === true) {
         return;
     }
     const InputBar = document.querySelector('.js-enter-input');
-    if ( InputBar.value === '')
-    {
+    if (InputBar.value === '') {
         document.querySelector('.error').textContent = `Empty field, please enter the value . . .`;
-        setTimeout(()=>{
-            document.querySelector('.error').innerHTML =``;
-        },4000)
+        setTimeout(() => {
+            document.querySelector('.error').innerHTML = ``;
+        }, 4000);
+        return;
+    }
+    while(counter<1)
+    {
+        const InputValueC = Number(InputBar.value)
+        numbers.push(InputValueC)
+        InputBar.value = '';
+        counter ++;
         return
     }
     const InputValueC = Number(InputBar.value)
-    numbers.push(InputValueC)
+    numbersF.push(InputValueC)
     InputBar.value = '';
-    if(filename === 'indi-direct-method.html')
+    counter = 0;
+    if(filename === 'disc-direct-method.html')
     {
         DirectMethod();
     } else if(filename==='indi-shortcut-method.html')
@@ -77,18 +86,28 @@ function takingValue(){
 function DirectMethod(){
     let htmlBody = `
         <tr>
-            <th>S.R</th>
             <th>X</th>
+            <th>F</th>
+            <th>FX</th>
         </tr>`;
+    let footerBody =`
+        <tr style="font-size: 10px;">
+            <th></th>
+            <th>&sum;F = ${totalSumF}</th>
+            <th>&sum;FX = ${totalSumFX}</th>
+        </tr>
+        `;
     numbers.forEach((value,index)=>{
         htmlBody += `
         <tr>
-            <td>${index+1}</td>
             <td>${value}</td>
+            <td>${numbersF[index]}</td>
+            <td>${numbersFX[index]}</td>
         </tr>`;
     })
     document.querySelector('.table-div').innerHTML = `<table>
         ${htmlBody}
+        ${footerBody}
     </table>`;
 }
 
@@ -116,7 +135,7 @@ function ShortcutMethod()
 // Calculating Mean using Direct Method 
 function calculateDirectMethod()
 {
-    if(meanDM!== 0)
+    if(meanD_DM!== 0)
     {
         return
     }
@@ -129,12 +148,18 @@ function calculateDirectMethod()
         },4000)
         return
     }
-    numbers.forEach((value)=>{
-        totalSum += value;
+    numbers.forEach((value,index)=>{ // calculating Fx
+        numbersFX.push(value * numbersF[index]);
     })
-    meanDM =  (((totalSum / totalNumber ) * 100 )/100).toFixed(2);
+    numbersF.forEach((value)=>{ // adding F
+        totalSumF += value;
+    })
+    numbersFX.forEach((value)=>{
+        totalSumFX += value;
+    })
+    meanD_DM =  (((totalSumFX / totalSumF) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM);
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
 }
@@ -195,11 +220,12 @@ function calculateShortcutMethod()
 }
 
 // Showing result
-function changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM)
+function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM)
 {
-    if(filename=== 'indi-direct-method.html')
+    if(filename=== 'disc-direct-method.html')
     {
-        resultDirectMethod(totalNumber,totalSum,meanDM);
+        DirectMethod();
+        resultDirectMethod(totalSumFX,totalSumF,meanD_DM);
     } else if(filename=== 'indi-shortcut-method.html')
     {
         resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
@@ -208,18 +234,18 @@ function changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM)
 }
 
 // Showing result for Direct Method
-function resultDirectMethod(totalNumber,totalSum,meanDM)
+function resultDirectMethod(totalSumFX,totalSumF,meanD_DM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>(Total Numbers) N = ${totalNumber}
+    <strong>(Total Sum F) &sum; = ${totalSumF}
     <br>
-    (Total Sum) &sum; = ${totalSum}
+    (Total Sum FX) &sum; = ${totalSumFX}
     <br>
-    (Mean) x̄ = ${meanDM}</strong>
+    (Mean) x̄ = ${meanD_DM}</strong>
     <hr>
-    <strong>Formula:  x̄ = &sum;/N</strong>
+    <strong>Formula:  x̄ = &sum;FX/&sum;F</strong>
     `;
-    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanDM}</strong>`;
+    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanD_DM}</strong>`;
 }
 
 // Showing result for Shortcut method
@@ -249,13 +275,17 @@ function clearEverything()
         },4000)
     }
     numbers.splice(0,numbers.length);
+    numbersF.splice(0,numbersF.length);
+    numbersFX.splice(0,numbersFX.length);
     numbersDX.splice(0,numbersDX.length);
+    numbersFDX.splice(0,numbersFDX.length);
     A = 0;
-    totalSum = 0;
-    totalSumDX = 0;
+    totalSumF = 0;
+    totalSumFX = 0;
+    totalSumFDX = 0;
     totalNumber = 0;
-    meanDM = 0;
-    meanSM = 0;
+    meanD_DM = 0;
+    meanD_SM = 0;
     EnterDisable = false;
     document.querySelector('.table-div').innerHTML = ``;
     document.querySelector('.result').innerHTML = ``;

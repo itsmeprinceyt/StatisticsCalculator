@@ -14,7 +14,7 @@ function takeMeToNextPage(index)
     }else if(index === 1){
         window.open('indi-shortcut-method.html',"_self");
     }else if(index === 2){
-        window.open('Pages/IndividualData/directmethod.html',"_self");
+        window.open('disc-direct-method.html',"_self");
     }else if(index === 3){
         window.open('Pages/IndividualData/directmethod.html',"_self");
     }else if(index === 4){
