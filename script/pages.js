@@ -12,6 +12,7 @@ let totalNumber = 0;
 let meanDM = 0;
 let meanSM = 0;
 
+let EnterDisable = false;
 // variable for storing the name of the file
 var url = window.location.pathname;
 var filename = url.substring(url.lastIndexOf('/')+1);
@@ -47,6 +48,10 @@ document.querySelector('.js-clear-everything').addEventListener('click',()=>{
 
 //Taking Value from input
 function takingValue(){
+    if(EnterDisable=== true)
+    {
+        return;
+    }
     const InputBar = document.querySelector('.js-enter-input');
     if ( InputBar.value === '')
     {
@@ -128,8 +133,10 @@ function calculateDirectMethod()
         totalSum += value;
     })
     meanDM =  (((totalSum / totalNumber ) * 100 )/100).toFixed(2);
+    EnterDisable = true;
     changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM);
     document.querySelector('.result').style.opacity = 1;
+    disableInputBox();
 }
 
 // Calculating Mean using Shortcut Method
@@ -180,9 +187,11 @@ function calculateShortcutMethod()
         Mark = false;
     }
     meanSM =  (((numbers[A] + totalSumDX / totalNumber ) * 100 )/100).toFixed(2);
+    EnterDisable = true;
     ShortcutMethod();
     changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM);
     document.querySelector('.result').style.opacity = 1;
+    disableInputBox();
 }
 
 // Showing result
@@ -247,11 +256,20 @@ function clearEverything()
     totalNumber = 0;
     meanDM = 0;
     meanSM = 0;
+    EnterDisable = false;
     document.querySelector('.table-div').innerHTML = ``;
     document.querySelector('.result').innerHTML = ``;
     document.querySelector('.pre-mean').innerHTML = ``;
     document.querySelector('.result').style.opacity = 0;
+    document.querySelector('.js-enter-input').disabled = false;
 }
+
+// Disable input box after clicking Calculate
+function disableInputBox()
+{
+    document.querySelector('.js-enter-input').disabled = true;
+}
+
 // Javascript for navigating to home page
 document.querySelector('.header-title').addEventListener('click',()=>{
     window.open('index.html',"_self");
