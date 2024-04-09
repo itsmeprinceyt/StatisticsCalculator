@@ -151,21 +151,24 @@ a:visited{
 
 @media (max-width: 768px)
 {
-    .main3{
+    .main{
         grid-template-columns: 230px 230px;
+        height: 200px;
+    }
+    .main3{
+        height: 400px;;
     }
 }
 @media (max-width: 536px)
 {
-    .main1{
-        
-    }
-    .main1,
-    .main2,
-    .main3{
+    .main{
         height: 350px;
-    grid-template-columns: 230px;
-}
+        grid-template-columns: 230px;
+    }
+    .main3{
+        grid-template-columns: 230px;
+        height: 540px;
+    }
 }
 @media (max-width: 377px)
 {
