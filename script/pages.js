@@ -131,7 +131,8 @@ function calculateDirectMethod()
 // Calculating Mean using Shortcut Method
 function calculateShortcutMethod()
 {
-    A = Math.round(numbers.length /2);
+    let Mark = false;
+    A = Math.ceil(numbers.length /2);
     totalNumber = numbers.length;
     if (totalNumber === 0)
     {
@@ -143,12 +144,29 @@ function calculateShortcutMethod()
     }
     totalSumDX = 0;
     numbers.forEach((value)=>{
-        numbersDX.push(value - A)
+        if(Number.isInteger(value))
+        {
+            numbersDX.push(value - numbers[A])
+        } else{
+            numbersDX.push((value - numbers[A]).toFixed(2))
+            Mark = true;
+        }
     })
     numbersDX.forEach((value)=>{
-        totalSumDX += value;
+        if(Number.isInteger(value))
+        {
+            totalSumDX += value;
+        } else{
+            let toBeAdded = value * 100;
+            totalSumDX += toBeAdded;
+        }
     })
-    meanSM =  (((A + totalSumDX / totalNumber ) * 100 )/100).toFixed(2);
+    if(Mark === true)
+    {
+        totalSumDX /=100;
+        Mark = false;
+    }
+    meanSM =  (((numbers[A] + totalSumDX / totalNumber ) * 100 )/100).toFixed(2);
     ShortcutMethod();
     changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM);
     document.querySelector('.result').style.opacity = 1;
@@ -186,7 +204,7 @@ function resultDirectMethod(totalNumber,totalSum,meanDM)
 function resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>(Key) A = ${A}
+    <strong>(Key) A = ${numbers[A]}
     <br>
     (Total Numbers) N = ${totalNumber}
     <br>
@@ -209,7 +227,7 @@ function clearEverything()
         },4000)
     }
     numbers.splice(0,numbers.length);
-    numbersDX.splice(0,numbersDX);
+    numbersDX.splice(0,numbersDX.length);
     A = 0;
     totalSum = 0;
     totalSumDX = 0;
