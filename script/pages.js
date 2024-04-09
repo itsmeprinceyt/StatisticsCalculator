@@ -111,6 +111,10 @@ function ShortcutMethod()
 // Calculating Mean using Direct Method 
 function calculateDirectMethod()
 {
+    if(meanDM!== 0)
+    {
+        return
+    }
     totalNumber = numbers.length;
     if (totalNumber === 0)
     {
@@ -131,8 +135,17 @@ function calculateDirectMethod()
 // Calculating Mean using Shortcut Method
 function calculateShortcutMethod()
 {
+    if(meanSM!== 0)
+    {
+        return
+    }
     let Mark = false;
-    A = Math.ceil(numbers.length /2);
+    if(numbers.length % 2 === 0 )
+    {
+        A = Math.round(numbers.length /2);
+    } else{
+        A = Math.floor(numbers.length / 2);
+    }
     totalNumber = numbers.length;
     if (totalNumber === 0)
     {
