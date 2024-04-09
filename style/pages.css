@@ -52,7 +52,8 @@ table td,tr{
     border-radius: 3px;
 }
 .js-submit,
-.js-calculate{
+.js-calculate,
+.js-clear-everything{
     padding: 8px 15px 8px 15px;
     background-color: rgb(25, 25, 25);
     color: white;
@@ -81,10 +82,12 @@ td{
     text-align: center;
 }
 .result{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    width: 250px;
     font-family: Roboto,Arial;
+}
+.error{
+    color: red;
+    font-weight: 500;
 }
 @media (max-width: 786px){
     .container{
@@ -100,6 +103,11 @@ td{
 }
 @media (max-width: 438px)
 {
+    .enter-material{
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
     .topic-title
     {
         font-size: 16px;
