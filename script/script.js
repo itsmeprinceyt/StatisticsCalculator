@@ -15,7 +15,7 @@ function takeMeToNextPage(index)
 {
     if (index === 0)
     {
-        window.open('Pages/IndividualData/directmethod.html',"_self");
+        window.open('indi-direct-method.html',"_self");
     }
     else if(index === 1)
     {

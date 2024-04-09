@@ -62,8 +62,8 @@ function changeData(totalNumber,totalSum,mean)
     document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${mean}</strong>`;
 }
 document.querySelector('.header-title').addEventListener('click',()=>{
-    window.open('../../../index.html',"_self");
+    window.open('index.html',"_self");
 })
 document.querySelector('.header-icon').addEventListener('click',()=>{
-    window.open('../../../index.html',"_self");
+    window.open('index.html',"_self");
 })
