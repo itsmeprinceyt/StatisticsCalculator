@@ -139,6 +139,7 @@ function calculateDirectMethod()
     {
         return
     }
+    let Mark = false;
     totalNumber = numbers.length;
     if (totalNumber === 0)
     {
@@ -148,15 +149,41 @@ function calculateDirectMethod()
         },4000)
         return
     }
+    totalSumF = 0;
+    totalSumFX = 0;
     numbers.forEach((value,index)=>{ // calculating Fx
-        numbersFX.push((value * numbersF[index]).toFixed(2))
+        if(Number.isInteger(value))
+        {
+            numbersFX.push(value * numbersF[index]);
+        } else{
+            numbersFX.push((value * numbersF[index]).toFixed(2));
+            Mark = true;
+        }
     })
     numbersF.forEach((value)=>{ // adding F
-        totalSumF += value;
+        if(Number.isInteger(value))
+        {
+            totalSumF +=value;
+        } else{
+            let toBeAdded = value * 100;
+            totalSumF +=toBeAdded;
+        }
     })
     numbersFX.forEach((value)=>{
-        totalSumFX += value;
+        if(Number.isInteger(value))
+        {
+            totalSumFX +=value;
+        } else{
+            let toBeAdded = value * 100;
+            totalSumFX +=toBeAdded;
+        }
     })
+    if(Mark === true)
+    {
+        totalSumF /= 100;
+        totalSumDX /= 100;
+        Mark = false;
+    }
     meanD_DM =  (((totalSumFX / totalSumF) * 100 )/100).toFixed(2);
     EnterDisable = true;
     changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM);
