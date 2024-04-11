@@ -257,8 +257,8 @@ function resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
 function clearEverything()
 {
     if (numbers.length=== 0) {ClearError();}
-    numbers.splice(0,numbers.length);
-    numbersDX.splice(0,numbersDX.length);
+    numbers.splice(0,totalNumber);
+    numbersDX.splice(0,totalNumber);
     A = 0;
     totalSum = 0;
     totalSumDX = 0;

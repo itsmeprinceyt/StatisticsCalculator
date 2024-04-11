@@ -1,17 +1,24 @@
-const numbers = []; // x
+const numbers = []; // C.I
+const numbersX = []; // x
 const numbersF = []; // frequency
 const numbersFX = []; // fx
 const numbersDX = []; // dx
 const numbersFDX = []; // fdx
+const numbersD_ = []; // d'
+const numbersFD_ = []; // fd'
 
 //variables for storing result data
 let A = 0;
+let MidPointX=0;
+let AdjustmentFactor = 0;
 let totalSumF = 0;
 let totalSumFX = 0;
 let totalSumFDX = 0;
+let totalSumFD_ = 0;
 let totalNumber = 0;
 let meanD_DM = 0;
 let meanD_SM = 0;
+let meanD_SDM = 0;
 
 let EnterDisable = false;
 let counter = 0;
@@ -35,12 +42,15 @@ document.querySelector('.js-enter-input').addEventListener('keydown', (event) =>
 
 // Calculate button event listener
 document.querySelector('.js-calculate').addEventListener('click',()=>{
-    if(filename=== 'disc-direct-method.html')
+    if(filename=== 'conti-direct-method.html')
     {
         calculateDirectMethod();
-    } else if(filename=== 'disc-shortcut-method.html')
+    } else if(filename=== 'conti-shortcut-method.html')
     {
         calculateShortcutMethod();
+    } else if(filename === 'conti-step-deviation-method.html')
+    {
+        calculateStepDeviationMethod();
     }
 })
 
@@ -71,12 +81,15 @@ function takingValue() {
     numbersF.push(InputValueC) // taking f
     InputBar.value = '';
     counter = 0;
-    if(filename === 'disc-direct-method.html')
+    if(filename=== 'conti-direct-method.html')
     {
         DirectMethod();
-    } else if(filename==='disc-shortcut-method.html')
+    } else if(filename=== 'conti-shortcut-method.html')
     {
         ShortcutMethod();
+    } else if(filename === 'conti-step-deviation-method.html')
+    {
+        StepDeviationMethod();
     }
 }
 
@@ -139,6 +152,11 @@ function ShortcutMethod()
         ${htmlBody}
         ${footerBody}
     </table>`;
+}
+
+function StepDeviationMethod()
+{
+
 }
 
 // Calculating Mean using Direct Method 
@@ -291,19 +309,27 @@ function calculateShortcutMethod()
     disableInputBox();
 }
 
+function calculateStepDeviationMethod()
+{
+
+}
+
 // Showing result
 function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM)
 {
-    if(filename=== 'disc-direct-method.html')
+    if(filename=== 'conti-direct-method.html')
     {
         DirectMethod();
-        resultDirectMethod(totalSumFX,totalSumF,meanD_DM);
-    } else if(filename=== 'disc-shortcut-method.html')
+        resultDirectMethod();
+    } else if(filename=== 'conti-shortcut-method.html')
     {
         ShortcutMethod();
-        resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanD_SM)
+        resultShortcutMethod()
+    } else if(filename === 'conti-step-deviation-method.html')
+    {
+        StepDeviationMethod();
+        resultStepDeviationMethod();
     }
-    
 }
 
 // Showing result for Direct Method
@@ -337,22 +363,33 @@ function resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanD_SM)
     document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanD_SM}</strong>`;
 }
 
+function resultStepDeviationMethod()
+{
+
+}
 // Javascript to clear all lists
 function clearEverything()
 {
     if (numbers.length=== 0) {ClearError();}
     numbers.splice(0,totalNumber);
+    numbersX.splice(0,totalNumber);
     numbersF.splice(0,totalNumber);
     numbersFX.splice(0,totalNumber);
     numbersDX.splice(0,totalNumber);
     numbersFDX.splice(0,totalNumber);
+    numbersD_.splice(0,totalNumber);
+    numbersFD_.splice(0,totalNumber);
     A = 0;
+    MidPointX = 0;
+    AdjustmentFactor = 0;
     totalSumF = 0;
     totalSumFX = 0;
     totalSumFDX = 0;
+    totalSumFD_ = 0;
     totalNumber = 0;
     meanD_DM = 0;
     meanD_SM = 0;
+    meanD_SDM = 0;
     EnterDisable = false;
     document.querySelector('.table-div').innerHTML = ``;
     document.querySelector('.result').innerHTML = ``;
