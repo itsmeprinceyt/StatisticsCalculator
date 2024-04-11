@@ -146,6 +146,10 @@ function calculateDirectMethod()
     numbers.forEach((value)=>{
         totalSum += value;
     })
+    if(Number.isInteger(totalSum)=== false)
+    {
+        totalSum = (totalSum).toFixed(2);
+    }
     meanDM =  (((totalSum / totalNumber ) * 100 )/100).toFixed(2);
     EnterDisable = true;
     changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM);
@@ -177,10 +181,19 @@ function calculateShortcutMethod()
         return
     }
     totalSumDX = 0;
-    numbers.forEach((value)=>{
+    numbers.forEach((value,index)=>{
         if(Number.isInteger(value))
         {
-            numbersDX.push(value - numbers[A])
+            let outputCheck = value-numbers[A]
+            if(Number.isInteger(outputCheck))
+            {
+                numbersDX.push(value - numbers[A])
+            }
+            else
+            {
+                numbersDX.push((value - numbers[A]).toFixed(2));
+                Mark = true;
+            }
         } else{
             numbersDX.push((value - numbers[A]).toFixed(2))
             Mark = true;

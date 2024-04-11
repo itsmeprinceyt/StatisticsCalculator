@@ -149,12 +149,19 @@ function calculateDirectMethod()
         },4000)
         return
     }
-    totalSumF = 0;
-    totalSumFX = 0;
     numbers.forEach((value,index)=>{ // calculating Fx
         if(Number.isInteger(value))
         {
-            numbersFX.push(value * numbersF[index]);
+            let outputCheck = value * numbersF[index];
+            if(Number.isInteger(outputCheck))
+            {
+                numbersFX.push(value * numbersF[index]);
+            }
+            else
+            {
+                numbersFX.push((value * numbersF[index]).toFixed(2));
+                Mark = true;
+            }
         } else{
             numbersFX.push((value * numbersF[index]).toFixed(2));
             Mark = true;
@@ -181,7 +188,7 @@ function calculateDirectMethod()
     if(Mark === true)
     {
         totalSumF /= 100;
-        totalSumDX /= 100;
+        totalSumFX /= 100;
         Mark = false;
     }
     meanD_DM =  (((totalSumFX / totalSumF) * 100 )/100).toFixed(2);
