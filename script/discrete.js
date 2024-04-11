@@ -149,7 +149,7 @@ function calculateDirectMethod()
         return
     }
     numbers.forEach((value,index)=>{ // calculating Fx
-        numbersFX.push(value * numbersF[index]);
+        numbersFX.push((value * numbersF[index]).toFixed(2))
     })
     numbersF.forEach((value)=>{ // adding F
         totalSumF += value;
