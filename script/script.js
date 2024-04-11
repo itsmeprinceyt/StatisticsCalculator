@@ -16,13 +16,13 @@ function takeMeToNextPage(index)
     }else if(index === 2){
         window.open('disc-direct-method.html',"_self");
     }else if(index === 3){
-        window.open('404.html',"_self");
+        window.open('disc-shortcut-method.html',"_self");
     }else if(index === 4){
-        window.open('404.html',"_self");
+        window.open('conti-direct-method.html',"_self");
     }else if(index === 5){
-        window.open('404.html',"_self");
+        window.open('conti-shortcut-method.html',"_self");
     }else if(index === 6){
-        window.open('404.html',"_self");
+        window.open('conti-step-deviation-method.html',"_self");
     }
 }
 // Home title navigates to index

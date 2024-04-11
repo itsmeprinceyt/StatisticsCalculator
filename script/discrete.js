@@ -37,7 +37,7 @@ document.querySelector('.js-calculate').addEventListener('click',()=>{
     if(filename=== 'disc-direct-method.html')
     {
         calculateDirectMethod();
-    } else if(filename=== 'indi-shortcut-method.html')
+    } else if(filename=== 'disc-shortcut-method.html')
     {
         calculateShortcutMethod();
     }
@@ -58,7 +58,7 @@ function takingValue() {
         InvalidInput();
         return;
     }
-    while(counter<1)
+    while(counter<1) // taking x
     {
         const InputValueC = Number(InputBar.value)
         numbers.push(InputValueC)
@@ -67,13 +67,13 @@ function takingValue() {
         return
     }
     const InputValueC = Number(InputBar.value)
-    numbersF.push(InputValueC)
+    numbersF.push(InputValueC) // taking f
     InputBar.value = '';
     counter = 0;
     if(filename === 'disc-direct-method.html')
     {
         DirectMethod();
-    } else if(filename==='indi-shortcut-method.html')
+    } else if(filename==='disc-shortcut-method.html')
     {
         ShortcutMethod();
     }
@@ -115,17 +115,28 @@ function ShortcutMethod()
             <th>S.R</th>
             <th>X</th>
             <th>DX</th>
+            <th>FDX</th>
         </tr>`;
+    let footerBody =`
+        <tr style="font-size: 10px;">
+            <th></th>
+            <th>&sum;F = ${totalSumF}</th>
+            <th></th>
+            <th>&sum;FDX = ${totalsumFDX}</th>
+        </tr>
+        `;
     numbers.forEach((value,index)=>{
         htmlBody += `
         <tr>
             <td>${index+1}</td>
             <td>${value}</td>
             <td>${numbersDX[index]}</td>
+            <td>${numbersFDX[index]}</td>
         </tr>`;
     })
     document.querySelector('.table-div').innerHTML = `<table>
         ${htmlBody}
+        ${footerBody}
     </table>`;
 }
 
@@ -251,7 +262,7 @@ function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,mean
     {
         DirectMethod();
         resultDirectMethod(totalSumFX,totalSumF,meanD_DM);
-    } else if(filename=== 'indi-shortcut-method.html')
+    } else if(filename=== 'disc-shortcut-method.html')
     {
         resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
     }
