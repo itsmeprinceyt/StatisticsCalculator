@@ -19,6 +19,7 @@ let counter = 0;
 var url = window.location.pathname;
 var filename = url.substring(url.lastIndexOf('/')+1);
 
+
 // Enter button event listener
 document.querySelector('.js-submit').addEventListener('click',()=>{
     takingValue();
@@ -112,8 +113,8 @@ function ShortcutMethod()
 {
     let htmlBody = `
         <tr>
-            <th>S.R</th>
             <th>X</th>
+            <th>F</th>
             <th>DX</th>
             <th>FDX</th>
         </tr>`;
@@ -122,14 +123,14 @@ function ShortcutMethod()
             <th></th>
             <th>&sum;F = ${totalSumF}</th>
             <th></th>
-            <th>&sum;FDX = ${totalsumFDX}</th>
+            <th>&sum;FDX = ${totalSumFDX}</th>
         </tr>
         `;
     numbers.forEach((value,index)=>{
         htmlBody += `
         <tr>
-            <td>${index+1}</td>
             <td>${value}</td>
+            <td>${numbersF[index]}</td>
             <td>${numbersDX[index]}</td>
             <td>${numbersFDX[index]}</td>
         </tr>`;
@@ -181,7 +182,7 @@ function calculateDirectMethod()
             totalSumF +=toBeAdded;
         }
     })
-    numbersFX.forEach((value)=>{
+    numbersFX.forEach((value)=>{ // adding fx
         if(Number.isInteger(value))
         {
             totalSumFX +=value;
@@ -206,7 +207,7 @@ function calculateDirectMethod()
 // Calculating Mean using Shortcut Method
 function calculateShortcutMethod()
 {
-    if(meanSM!== 0)
+    if(meanD_SM!== 0)
     {
         return
     }
@@ -223,34 +224,69 @@ function calculateShortcutMethod()
         CalculationError();
         return
     }
-    totalSumDX = 0;
-    numbers.forEach((value)=>{
+    numbers.forEach((value,index)=>{ // getting dx
         if(Number.isInteger(value))
         {
-            numbersDX.push(value - numbers[A])
+            let outputCheck = value-numbers[A]
+            if(Number.isInteger(outputCheck))
+            {
+                numbersDX.push(value - numbers[A])
+            }
+            else
+            {
+                numbersDX.push((value - numbers[A]).toFixed(2));
+                Mark = true;
+            }
         } else{
             numbersDX.push((value - numbers[A]).toFixed(2))
             Mark = true;
         }
-    })
-    numbersDX.forEach((value)=>{
+    });
+    numbersF.forEach((value,index)=>{ // calculating fdx
         if(Number.isInteger(value))
         {
-            totalSumDX += value;
+            let outputCheck = value * numbersDX[index];
+            if(Number.isInteger(outputCheck))
+            {
+                numbersFDX.push(value * numbersDX[index]);
+            }
+            else
+            {
+                numbersFDX.push((value * numbersDX[index]).toFixed(2));
+                Mark = true;
+            }
+        } else{
+            numbersFDX.push((value * numbersDX[index]).toFixed(2));
+            Mark = true;
+        }
+    })
+    numbersF.forEach((value)=>{ // adding F
+        if(Number.isInteger(value))
+        {
+            totalSumF +=value;
         } else{
             let toBeAdded = value * 100;
-            totalSumDX += toBeAdded;
+            totalSumF +=toBeAdded;
+        }
+    })
+    numbersFDX.forEach((value)=>{ // adding fx
+        if(Number.isInteger(value))
+        {
+            totalSumFDX +=value;
+        } else{
+            let toBeAdded = value * 100;
+            totalSumFDX +=toBeAdded;
         }
     })
     if(Mark === true)
     {
-        totalSumDX /=100;
+        totalSumF /= 100;
+        totalSumFDX /= 100;
         Mark = false;
     }
-    meanSM =  (((numbers[A] + totalSumDX / totalNumber ) * 100 )/100).toFixed(2);
+    meanD_SM =  (((numbers[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    ShortcutMethod();
-    changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM);
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
 }
@@ -264,7 +300,8 @@ function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,mean
         resultDirectMethod(totalSumFX,totalSumF,meanD_DM);
     } else if(filename=== 'disc-shortcut-method.html')
     {
-        resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
+        ShortcutMethod();
+        resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanD_SM)
     }
     
 }
@@ -273,11 +310,11 @@ function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,mean
 function resultDirectMethod(totalSumFX,totalSumF,meanD_DM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>(Total Sum F) &sum; = ${totalSumF}
+    <strong>&sum;F = ${totalSumF} <span style="font-size: 10px;">[Sum Of F]</span> 
     <br>
-    (Total Sum FX) &sum; = ${totalSumFX}
+    &sum;FX = ${totalSumFX} <span style="font-size: 10px;">[Sum Of FX]</span> 
     <br>
-    (Mean) x̄ = ${meanD_DM}</strong>
+    x̄ = ${meanD_DM} <span style="font-size: 10px;">[Mean]</span> </strong> 
     <hr>
     <strong>Formula:  x̄ = &sum;FX/&sum;F</strong>
     `;
@@ -285,19 +322,19 @@ function resultDirectMethod(totalSumFX,totalSumF,meanD_DM)
 }
 
 // Showing result for Shortcut method
-function resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
+function resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanD_SM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>(Key) A = ${numbers[A]}
+    <strong>A = ${numbers[A]} <span style="font-size: 10px;">[Key]</span> 
     <br>
-    (Total Numbers) N = ${totalNumber}
+    &sum;FDX = ${totalSumFDX} <span style="font-size: 10px;">[Sum Of FDX]</span> 
     <br>
-    (Total Sum) &sum; = ${totalSumDX}
+    &sum;F = ${totalSumF} <span style="font-size: 10px;">[Sum Of F]</span> 
     <br>
-    (Mean) x̄ = ${meanSM}</strong>
+    x̄ = ${meanD_SM} <span style="font-size: 10px;">[Mean]</span> </strong>
     <hr>
-    <strong>Formula:  x̄ = A + &sum;dx/N</strong>`;
-    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanSM}</strong>`;
+    <strong>Formula:  x̄ = A + &sum;FDX/&sum;F</strong>`;
+    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanD_SM}</strong>`;
 }
 
 // Javascript to clear all lists

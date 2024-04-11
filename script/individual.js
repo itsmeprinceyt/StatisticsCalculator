@@ -168,7 +168,6 @@ function calculateShortcutMethod()
         CalculationError();
         return
     }
-    totalSumDX = 0;
     numbers.forEach((value,index)=>{
         if(Number.isInteger(value))
         {
@@ -203,7 +202,6 @@ function calculateShortcutMethod()
     }
     meanSM =  (((numbers[A] + totalSumDX / totalNumber ) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    ShortcutMethod();
     changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
@@ -228,11 +226,11 @@ function changeData(A,totalSum,totalSumDX,totalNumber,meanDM,meanSM)
 function resultDirectMethod(totalNumber,totalSum,meanDM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>(Total Numbers) N = ${totalNumber}
+    <strong>N = ${totalNumber} <span style="font-size: 10px;">[Total Numbers]</span> 
     <br>
-    (Total Sum) &sum; = ${totalSum}
+    &sum;X = ${totalSum} <span style="font-size: 10px;">[Sum Of X]</span> 
     <br>
-    (Mean) x̄ = ${meanDM}</strong>
+    x̄ = ${meanDM} <span style="font-size: 10px;">[Mean]</span> </strong>
     <hr>
     <strong>Formula:  x̄ = &sum;X/N</strong>
     `;
@@ -243,15 +241,15 @@ function resultDirectMethod(totalNumber,totalSum,meanDM)
 function resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>(Key) A = ${numbers[A]}
+    <strong>A = ${numbers[A]} <span style="font-size: 10px;">[Key]</span> 
     <br>
-    (Total Numbers) N = ${totalNumber}
+    N = ${totalNumber} <span style="font-size: 10px;">[Total Numbers]</span> 
     <br>
-    (Total Sum) &sum; = ${totalSumDX}
+    &sum;DX = ${totalSumDX} <span style="font-size: 10px;">[Sum Of DX]</span> 
     <br>
-    (Mean) x̄ = ${meanSM}</strong>
+    x̄ = ${meanSM} <span style="font-size: 10px;">[Mean]</span> </strong> 
     <hr>
-    <strong>Formula:  x̄ = A + &sum;dx/N</strong>`;
+    <strong>Formula:  x̄ = A + &sum;DX/N</strong>`;
     document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanSM}</strong>`;
 }
 
