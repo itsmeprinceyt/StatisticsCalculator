@@ -55,10 +55,7 @@ function takingValue() {
     }
     const InputBar = document.querySelector('.js-enter-input');
     if (InputBar.value === '') {
-        document.querySelector('.error').textContent = `Empty field, please enter the value . . .`;
-        setTimeout(() => {
-            document.querySelector('.error').innerHTML = ``;
-        }, 4000);
+        InvalidInput();
         return;
     }
     while(counter<1)
@@ -143,10 +140,7 @@ function calculateDirectMethod()
     totalNumber = numbers.length;
     if (totalNumber === 0)
     {
-        document.querySelector('.error').textContent = `Calculation error, no data found . . .`;
-        setTimeout(()=>{
-            document.querySelector('.error').innerHTML =``;
-        },4000)
+        CalculationError();
         return
     }
     numbers.forEach((value,index)=>{ // calculating Fx
@@ -215,10 +209,7 @@ function calculateShortcutMethod()
     totalNumber = numbers.length;
     if (totalNumber === 0)
     {
-        document.querySelector('.error').textContent = `Calculation error, no data found . . .`;
-        setTimeout(()=>{
-            document.querySelector('.error').innerHTML =``;
-        },4000)
+        CalculationError();
         return
     }
     totalSumDX = 0;
@@ -301,13 +292,7 @@ function resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
 // Javascript to clear all lists
 function clearEverything()
 {
-    if (numbers.length=== 0)
-    {
-        document.querySelector('.error').textContent = `Please input your data first . . .`;
-        setTimeout(()=>{
-            document.querySelector('.error').innerHTML =``;
-        },4000)
-    }
+    if (numbers.length=== 0) {ClearError();}
     numbers.splice(0,numbers.length);
     numbersF.splice(0,numbersF.length);
     numbersFX.splice(0,numbersFX.length);
@@ -332,6 +317,26 @@ function clearEverything()
 function disableInputBox()
 {
     document.querySelector('.js-enter-input').disabled = true;
+}
+
+// Invalid input errors
+function InvalidInput(){
+    document.querySelector('.error').textContent = `Input Error: Input field cannot be empty ...`;
+    setTimeout(()=>{
+        document.querySelector('.error').innerHTML =``;
+    },4000);
+}
+function CalculationError(){
+    document.querySelector('.error').textContent = `Calculation Error: No data found to calculate further ...`;
+    setTimeout(()=>{
+        document.querySelector('.error').innerHTML =``;
+    },4000);
+}
+function ClearError(){
+    document.querySelector('.error').textContent = `Clear Error: No data exists, cannot clear ...`;
+    setTimeout(()=>{
+        document.querySelector('.error').innerHTML =``;
+    },4000);
 }
 
 // Javascript for navigating to home page
