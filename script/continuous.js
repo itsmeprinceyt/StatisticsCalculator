@@ -1,4 +1,5 @@
-const numbers = []; // C.I
+const numbers = []; // C.I - 1st interval
+const numbers2 = []; // C.I - 2nd interval
 const numbersX = []; // x
 const numbersF = []; // frequency
 const numbersFX = []; // fx
@@ -16,16 +17,20 @@ let totalSumFX = 0;
 let totalSumFDX = 0;
 let totalSumFD_ = 0;
 let totalNumber = 0;
-let meanD_DM = 0;
-let meanD_SM = 0;
-let meanD_SDM = 0;
+let meanC_DM = 0;
+let meanC_SM = 0;
+let meanC_SDM = 0;
+let InputBar = ``;
+let classInterval = [];
+let classIntervalbreak = [];
+let _1stInterval = 0;
+let _2ndInterval = 0;
+let FrequencyDigit = 0;
 
 let EnterDisable = false;
-let counter = 0;
 // variable for storing the name of the file
 var url = window.location.pathname;
 var filename = url.substring(url.lastIndexOf('/')+1);
-
 
 // Enter button event listener
 document.querySelector('.js-submit').addEventListener('click',()=>{
@@ -64,23 +69,27 @@ function takingValue() {
     if (EnterDisable === true) {
         return;
     }
-    const InputBar = document.querySelector('.js-enter-input');
-    if (InputBar.value === '') {
-        InvalidInput();
-        return;
-    }
-    while(counter<1) // taking x
+    InputBar = document.querySelector('.js-enter-input').value;
+    classInterval = InputBar.split(" ");
+    classIntervalbreak = classInterval[0].split("-")
+    _1stInterval = Number(classIntervalbreak[0]);
+    _2ndInterval = Number(classIntervalbreak[1]);
+    FrequencyDigit = Number(classInterval[1]);
+    if(isNaN(_1stInterval) || isNaN(_2ndInterval) || isNaN(FrequencyDigit) )
     {
-        const InputValueC = Number(InputBar.value)
-        numbers.push(InputValueC)
-        InputBar.value = '';
-        counter ++;
+        clearEverything();
+        ClassIntervalError();
         return
     }
-    const InputValueC = Number(InputBar.value)
-    numbersF.push(InputValueC) // taking f
-    InputBar.value = '';
-    counter = 0;
+    if (InputBar.value === '') {
+        clearEverything();
+        ClassIntervalError();
+        return;
+    }
+    numbers.push(_1stInterval);
+    numbers2.push(_2ndInterval);
+    numbersF.push(FrequencyDigit);
+    document.querySelector('.js-enter-input').value = ``;
     if(filename=== 'conti-direct-method.html')
     {
         DirectMethod();
@@ -97,22 +106,25 @@ function takingValue() {
 function DirectMethod(){
     let htmlBody = `
         <tr>
-            <th>X</th>
+            <th>C.I</th>
             <th>F</th>
+            <th>X</th>
             <th>FX</th>
         </tr>`;
     let footerBody =`
         <tr style="font-size: 10px;">
             <th></th>
             <th>&sum;F = ${totalSumF}</th>
+            <th></th>
             <th>&sum;FX = ${totalSumFX}</th>
         </tr>
         `;
     numbers.forEach((value,index)=>{
         htmlBody += `
         <tr>
-            <td>${value}</td>
+            <td>${value}-${numbers2[index]}</td>
             <td>${numbersF[index]}</td>
+            <td>${numbersX[index]}</td>
             <td>${numbersFX[index]}</td>
         </tr>`;
     })
@@ -162,7 +174,7 @@ function StepDeviationMethod()
 // Calculating Mean using Direct Method 
 function calculateDirectMethod()
 {
-    if(meanD_DM!== 0)
+    if(meanC_DM!== 0)
     {
         return
     }
@@ -173,24 +185,55 @@ function calculateDirectMethod()
         CalculationError();
         return
     }
-    numbers.forEach((value,index)=>{ // calculating Fx
+
+    // Converting inclusive to exclusive
+    if (numbers2[0] !== numbers[1]) {
+        InclusiveDetected();
+        AdjustmentFactor = (numbers[1] - numbers2[0]) / 2;
+        for (let i = 0; i < totalNumber; i++) {
+            let temp1 = parseFloat(numbers[i].toFixed(2));
+            let temp2 = parseFloat(numbers2[i].toFixed(2));
+            numbers[i] = temp1 - AdjustmentFactor;
+            numbers2[i] = temp2 + AdjustmentFactor;
+        }
+    }
+    
+    numbers.forEach((value,index)=>{ // calculating x
         if(Number.isInteger(value))
         {
-            let outputCheck = value * numbersF[index];
+            let outputCheck = (value + numbers2[index]) / 2;
             if(Number.isInteger(outputCheck))
             {
-                numbersFX.push(value * numbersF[index]);
+                numbersX.push((value + numbers2[index]) / 2);
             }
             else
             {
-                numbersFX.push((value * numbersF[index]).toFixed(2));
+                numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
                 Mark = true;
             }
         } else{
-            numbersFX.push((value * numbersF[index]).toFixed(2));
+            numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
             Mark = true;
         }
-    })
+    });
+    numbers.forEach((value,index)=>{ // getting dx
+        if(Number.isInteger(value))
+        {
+            let outputCheck = numbersX[index] * numbersF[index];
+            if(Number.isInteger(outputCheck))
+            {
+                numbersFX.push(numbersX[index] * numbersF[index]);
+            }
+            else
+            {
+                numbersFX.push((numbersX[index] * numbersF[index]).toFixed(2));
+                Mark = true;
+            }
+        } else{
+            numbersFX.push((numbersX[index] * numbersF[index]).toFixed(2))
+            Mark = true;
+        }
+    });
     numbersF.forEach((value)=>{ // adding F
         if(Number.isInteger(value))
         {
@@ -215,9 +258,9 @@ function calculateDirectMethod()
         totalSumFX /= 100;
         Mark = false;
     }
-    meanD_DM =  (((totalSumFX / totalSumF) * 100 )/100).toFixed(2);
+    meanC_DM =  (((totalSumFX / totalSumF) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM);
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
 }
@@ -225,7 +268,7 @@ function calculateDirectMethod()
 // Calculating Mean using Shortcut Method
 function calculateShortcutMethod()
 {
-    if(meanD_SM!== 0)
+    if(meanC_SM!== 0)
     {
         return
     }
@@ -302,9 +345,9 @@ function calculateShortcutMethod()
         totalSumFDX /= 100;
         Mark = false;
     }
-    meanD_SM =  (((numbers[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
+    meanC_SM =  (((numbers[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM);
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
 }
@@ -315,12 +358,12 @@ function calculateStepDeviationMethod()
 }
 
 // Showing result
-function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM)
+function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM,meanC_SDM)
 {
     if(filename=== 'conti-direct-method.html')
     {
         DirectMethod();
-        resultDirectMethod();
+        resultDirectMethod(totalSumFX,totalSumF,meanC_DM);
     } else if(filename=== 'conti-shortcut-method.html')
     {
         ShortcutMethod();
@@ -333,22 +376,22 @@ function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,mean
 }
 
 // Showing result for Direct Method
-function resultDirectMethod(totalSumFX,totalSumF,meanD_DM)
+function resultDirectMethod(totalSumFX,totalSumF,meanC_DM)
 {
     document.querySelector('.result').innerHTML = `
     <strong>&sum;F = ${totalSumF} <span style="font-size: 10px;">[Sum Of F]</span> 
     <br>
     &sum;FX = ${totalSumFX} <span style="font-size: 10px;">[Sum Of FX]</span> 
     <br>
-    x̄ = ${meanD_DM} <span style="font-size: 10px;">[Mean]</span> </strong> 
+    x̄ = ${meanC_DM} <span style="font-size: 10px;">[Mean]</span> </strong> 
     <hr>
     <strong>Formula:  x̄ = &sum;FX/&sum;F</strong>
     `;
-    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanD_DM}</strong>`;
+    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanC_DM}</strong>`;
 }
 
 // Showing result for Shortcut method
-function resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanD_SM)
+function resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanC_SM)
 {
     document.querySelector('.result').innerHTML = `
     <strong>A = ${numbers[A]} <span style="font-size: 10px;">[Key]</span> 
@@ -357,10 +400,10 @@ function resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanD_SM)
     <br>
     &sum;F = ${totalSumF} <span style="font-size: 10px;">[Sum Of F]</span> 
     <br>
-    x̄ = ${meanD_SM} <span style="font-size: 10px;">[Mean]</span> </strong>
+    x̄ = ${meanC_SM} <span style="font-size: 10px;">[Mean]</span> </strong>
     <hr>
     <strong>Formula:  x̄ = A + &sum;FDX/&sum;F</strong>`;
-    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanD_SM}</strong>`;
+    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanC_SM}</strong>`;
 }
 
 function resultStepDeviationMethod()
@@ -372,6 +415,7 @@ function clearEverything()
 {
     if (numbers.length=== 0) {ClearError();}
     numbers.splice(0,totalNumber);
+    numbers2.splice(0,totalNumber);
     numbersX.splice(0,totalNumber);
     numbersF.splice(0,totalNumber);
     numbersFX.splice(0,totalNumber);
@@ -387,9 +431,17 @@ function clearEverything()
     totalSumFDX = 0;
     totalSumFD_ = 0;
     totalNumber = 0;
-    meanD_DM = 0;
-    meanD_SM = 0;
-    meanD_SDM = 0;
+    meanC_DM = 0;
+    meanC_SM = 0;
+    meanC_SDM = 0;
+
+    InputBar = ``;
+    classInterval = [];
+    classIntervalbreak = [];
+    _1stInterval = 0;
+    _2ndInterval = 0;
+    FrequencyDigit = 0;
+
     EnterDisable = false;
     document.querySelector('.table-div').innerHTML = ``;
     document.querySelector('.result').innerHTML = ``;
@@ -421,6 +473,20 @@ function ClearError(){
     document.querySelector('.error').textContent = `Clear Error: No data exists, cannot clear ...`;
     setTimeout(()=>{
         document.querySelector('.error').innerHTML =``;
+    },4000);
+}
+function ClassIntervalError()
+{
+    document.querySelector('.error').textContent = `Input Error: Input is either empty or in incorrect form ...`;
+    setTimeout(()=>{
+        document.querySelector('.error').innerHTML=``;
+    },4000);
+}
+function InclusiveDetected()
+{
+    document.querySelector('.error').textContent = `Inclusive Data Found: The Data will be converted into exclusive form ...`;
+    setTimeout(()=>{
+        document.querySelector('.error').innerHTML=``;
     },4000);
 }
 
