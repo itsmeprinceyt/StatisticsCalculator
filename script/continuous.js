@@ -179,6 +179,7 @@ function calculateDirectMethod()
         return
     }
     let Mark = false;
+    let Mark2 = false;
     totalNumber = numbers.length;
     if (totalNumber === 0)
     {
@@ -241,6 +242,7 @@ function calculateDirectMethod()
         } else{
             let toBeAdded = value * 100;
             totalSumF +=toBeAdded;
+            Mark2 = true;
         }
     })
     numbersFX.forEach((value)=>{ // adding fx
@@ -254,9 +256,13 @@ function calculateDirectMethod()
     })
     if(Mark === true)
     {
-        totalSumF /= 100;
         totalSumFX /= 100;
         Mark = false;
+    }
+    if(Mark2 === true)
+    {
+        totalSumF /= 100;
+        Mark2= false;
     }
     meanC_DM =  (((totalSumFX / totalSumF) * 100 )/100).toFixed(2);
     EnterDisable = true;

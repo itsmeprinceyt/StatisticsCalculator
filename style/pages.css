@@ -86,6 +86,7 @@ td{
     font-family: Roboto,Arial;
 }
 .error{
+    text-align: center;
     color: red;
     font-weight: 500;
 }
