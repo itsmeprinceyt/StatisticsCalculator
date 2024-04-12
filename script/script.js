@@ -25,10 +25,6 @@ function takeMeToNextPage(index)
         window.open('conti-step-deviation-method.html',"_self");
     }
 }
-// Home title navigates to index
-document.querySelector('.header-title').addEventListener('click',()=>{
-    window.open('index.html',"_self");
-})
 
 // Home icon navigates to icon
 document.querySelector('.header-icon').addEventListener('click',()=>{
