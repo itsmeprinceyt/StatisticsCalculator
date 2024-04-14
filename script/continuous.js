@@ -17,6 +17,7 @@ let totalSumFX = 0;
 let totalSumFDX = 0;
 let totalSumFD_ = 0;
 let totalNumber = 0;
+let I = 0;
 let meanC_DM = 0;
 let meanC_SM = 0;
 let meanC_SDM = 0;
@@ -302,7 +303,7 @@ function calculateDirectMethod()
     }
     meanC_DM =  (((totalSumFX / totalSumF) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM,meanC_SDM);
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,I,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
 }
@@ -428,14 +429,14 @@ function calculateShortcutMethod()
     }
     meanC_SM =  (((numbersX[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM,meanC_SDM);
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,I,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
 }
 
 function calculateStepDeviationMethod()
 {
-    if(meanC_SM!== 0)
+    if(meanC_SDM!== 0)
     {
         return
     }
@@ -455,7 +456,6 @@ function calculateStepDeviationMethod()
         CalculationError();
         return
     }
-
     // Converting inclusive to exclusive
     if (numbers2[0] !== numbers[1]) {
         InclusiveDetected();
@@ -551,15 +551,15 @@ function calculateStepDeviationMethod()
         totalSumF /= 100;
         Mark2= false;
     }
-    meanC_SM =  (((numbersX[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
+    meanC_SDM =  (((numbersX[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM,meanC_SDM);
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,I,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
 }
 
 // Showing result
-function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM,meanC_SDM)
+function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,I,meanC_DM,meanC_SM,meanC_SDM)
 {
     if(filename=== 'conti-direct-method.html')
     {
@@ -572,7 +572,7 @@ function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,mean
     } else if(filename === 'conti-step-deviation-method.html')
     {
         StepDeviationMethod();
-        resultStepDeviationMethod();
+        resultStepDeviationMethod(A,totalNumber,totalSumFD_,totalSumF,I,meanC_SDM);
     }
 }
 
@@ -607,9 +607,21 @@ function resultShortcutMethod(A,totalNumber,totalSumFDX,totalSumF,meanC_SM)
     document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanC_SM}</strong>`;
 }
 
-function resultStepDeviationMethod()
+function resultStepDeviationMethod(A,totalNumber,totalSumFD_,totalSumF,I,meanC_SDM)
 {
-
+    document.querySelector('.result').innerHTML = `
+    <strong>A = ${numbersX[A]} <span style="font-size: 10px;">[Key]</span> 
+    <br>
+    <strong>I = ${I} <span style="font-size: 10px;">[Common Highest Factor]</span> 
+    <br>
+    &sum;FD' = ${totalSumFD_} <span style="font-size: 10px;">[Sum Of FD']</span> 
+    <br>
+    &sum;F = ${totalSumF} <span style="font-size: 10px;">[Sum Of F]</span> 
+    <br>
+    x̄ = ${meanC_SDM} <span style="font-size: 10px;">[Mean]</span> </strong>
+    <hr>
+    <strong>Formula:  x̄ = A + (&sum;FD'/&sum;F) * i</strong>`;
+    document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanC_SDM}</strong>`;
 }
 // Javascript to clear all lists
 function clearEverything()
@@ -632,6 +644,7 @@ function clearEverything()
     totalSumFDX = 0;
     totalSumFD_ = 0;
     totalNumber = 0;
+    I = 0;
     meanC_DM = 0;
     meanC_SM = 0;
     meanC_SDM = 0;
