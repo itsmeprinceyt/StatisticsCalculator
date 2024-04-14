@@ -3,67 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistics Calculator</title>
-    <link rel="stylesheet" href="style/style.css" type="text/css">
-    <style>
-        .Error404
-        {
-            background-color: rgba(0,0,0,1);
-            width: 500px;
-            height: 150px;
-            border-radius: 20px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            vertical-align: middle;
-            align-items: center;
-            gap: 20px;
-            transform: translate(-50%,-50%);
-            box-shadow: 0 0 100px rgba(0,0,0,1);
-        }
-        .Error404 p{
-            font-size: 50px;
-            color: white;
-        }
-        .Error404 a{
-            font-family: Roboto,Arial;
-        }
-        @media (max-width: 768px)
-        {
-            .Error404
-            {
-                background-color: rgba(0,0,0,1);
-                width: 250px;
-                height: 140px;
-                border-radius: 20px;
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                vertical-align: middle;
-                align-items: center;
-                gap: 20px;
-                transform: translate(-50%,-50%);
-                box-shadow: 0 0 100px rgba(0,0,0,1);
-            }
-            .Error404 p{
-                font-size: 25px;
-                color: white;
-            }
-        }
-    </style>
+    <title>Continuous Shortcut Method</title>
+    <link rel="stylesheet" href="style/pages.css" class="styleSheet">
+    <link rel="stylesheet" href="style/style.css">
 </head>
 <body>
-    
-    <div class="Error404">
-        <p>404 Error</p>
-        <a href="index.html">Take Me To Home</a>
+    <div class="header">
+        <img src="images/homeBlack.png" class="header-icon">
+        <h1 class="title-of-page-in-second-style"></h1>
+        <img src="images/Hamburger-black.png" class="ham-burger">
     </div>
+    <div class="menu hide">
+        <ul type="none">
+            <li style="font-style: italic; font-size: 18px;">Individual Data</li>
+            <li><a href="indi-direct-method.html">Direct Method</a></li>
+            <li><a href="indi-shortcut-method.html">Shortcut Method</a></li>
+            <li></li>
+            <li style="font-style: italic; font-size: 18px;">Discrete Data</li>
+            <li><a href="disc-direct-method.html">Direct Method</a></li>
+            <li><a href="disc-shortcut-method.html">Shortcut Method</a></li>
+            <li></li>
+            <li style="font-style: italic; font-size: 18px;">Continuous Data</li>
+            <li><a href="conti-direct-method.html">Direct Method</a></li>
+            <li><a href="conti-shortcut-method.html">Shortcut Method</a></li>
+            <li><a href="conti-step-deviation-method.html">Step Deviation Method</a></li>
+            <li></li>
+            <li>
+                <a href="https://github.com/itsmeprinceyt" target="_blank" style="color: rgb(0, 179, 255);">
+                    <button class="buttonsInMenu">Github Profile Theme</button>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/itsmeprinceyt/StatisticsCalculator" target="_blank" style="color: rgb(0, 179, 255);">
+                    <button class="buttonsInMenu">Github Repository</button>
+                </a>
+            </li>
+            <li>
+                <button class="changeTheme">Change Theme</button>
+            </li>
+        </ul>
     </div>
+    <div class="container">
+        <p class="topic-title">Continuous Data - Shortcut Method</p>
+        <div class="enter-material">
+            <input type="text" class="js-enter-input" placeholder="0-10 2">
+            <button class="js-submit">Enter</button>
+            <button class="js-calculate">Calculate</button>
+            <button class="js-clear-everything">Clear</button>
+        </div>
+        <p class="error"></p>
+        <p class="pre-mean"></p>
+        <div class="table-div">
+        </div>
+        
+    </div>
+    <div class="container" style="opacity: 0;"></div>
+    <div class="result">
+
+    </div>
+    <div class="container" style="opacity: 0;"></div>
+    <script src="script/continuous.js"></script>
 </body>
 </html>
