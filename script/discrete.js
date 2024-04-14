@@ -212,6 +212,7 @@ function calculateShortcutMethod()
         return
     }
     let Mark = false;
+    let Mark2 = false;
     if(numbers.length % 2 === 0 )
     {
         A = Math.round(numbers.length /2);
@@ -267,6 +268,7 @@ function calculateShortcutMethod()
         } else{
             let toBeAdded = value * 100;
             totalSumF +=toBeAdded;
+            Mark2 = true;
         }
     })
     numbersFDX.forEach((value)=>{ // adding fx
@@ -280,9 +282,13 @@ function calculateShortcutMethod()
     })
     if(Mark === true)
     {
-        totalSumF /= 100;
-        totalSumFDX /= 100;
+        totalSumFX /= 100;
         Mark = false;
+    }
+    if(Mark2 === true)
+    {
+        totalSumF /= 100;
+        Mark2= false;
     }
     meanD_SM =  (((numbers[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
     EnterDisable = true;

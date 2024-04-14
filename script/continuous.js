@@ -138,8 +138,9 @@ function ShortcutMethod()
 {
     let htmlBody = `
         <tr>
-            <th>X</th>
+            <th>C.I</th>
             <th>F</th>
+            <th>X</th>
             <th>DX</th>
             <th>FDX</th>
         </tr>`;
@@ -148,14 +149,16 @@ function ShortcutMethod()
             <th></th>
             <th>&sum;F = ${totalSumF}</th>
             <th></th>
+            <th></th>
             <th>&sum;FDX = ${totalSumFDX}</th>
         </tr>
         `;
     numbers.forEach((value,index)=>{
         htmlBody += `
         <tr>
-            <td>${value}</td>
+            <td>${value}-${numbers2[index]}</td>
             <td>${numbersF[index]}</td>
+            <td>${numbersX[index]}</td>
             <td>${numbersDX[index]}</td>
             <td>${numbersFDX[index]}</td>
         </tr>`;
@@ -168,7 +171,40 @@ function ShortcutMethod()
 
 function StepDeviationMethod()
 {
-
+    let htmlBody = `
+        <tr>
+            <th>C.I</th>
+            <th>F</th>
+            <th>X</th>
+            <th>DX</th>
+            <th>D'</th>
+            <th>FD'</th>
+        </tr>`;
+    let footerBody =`
+        <tr style="font-size: 10px;">
+            <th></th>
+            <th>&sum;F = ${totalSumF}</th>
+            <th></th>
+            <th></th>
+            <th></th>
+            <th>&sum;FD' = ${totalSumFD_}</th>
+        </tr>
+        `;
+    numbers.forEach((value,index)=>{
+        htmlBody += `
+        <tr>
+            <td>${value}-${numbers2[index]}</td>
+            <td>${numbersF[index]}</td>
+            <td>${numbersX[index]}</td>
+            <td>${numbersDX[index]}</td>
+            <td>${numbersD_}</td>
+            <td>${numbersFD_[index]}</td>
+        </tr>`;
+    })
+    document.querySelector('.table-div').innerHTML = `<table>
+        ${htmlBody}
+        ${footerBody}
+    </table>`;
 }
 
 // Calculating Mean using Direct Method 
@@ -217,7 +253,7 @@ function calculateDirectMethod()
             Mark = true;
         }
     });
-    numbers.forEach((value,index)=>{ // getting dx
+    numbers.forEach((value,index)=>{ // getting Fx
         if(Number.isInteger(value))
         {
             let outputCheck = numbersX[index] * numbersF[index];
@@ -279,33 +315,67 @@ function calculateShortcutMethod()
         return
     }
     let Mark = false;
+    let Mark2 = false;
+    // getting Key
     if(numbers.length % 2 === 0 )
     {
         A = Math.round(numbers.length /2);
     } else{
         A = Math.floor(numbers.length / 2);
     }
+
     totalNumber = numbers.length;
     if (totalNumber === 0)
     {
         CalculationError();
         return
     }
-    numbers.forEach((value,index)=>{ // getting dx
+
+    // Converting inclusive to exclusive
+    if (numbers2[0] !== numbers[1]) {
+        InclusiveDetected();
+        AdjustmentFactor = (numbers[1] - numbers2[0]) / 2;
+        for (let i = 0; i < totalNumber; i++) {
+            let temp1 = parseFloat(numbers[i].toFixed(2));
+            let temp2 = parseFloat(numbers2[i].toFixed(2));
+            numbers[i] = temp1 - AdjustmentFactor;
+            numbers2[i] = temp2 + AdjustmentFactor;
+        }
+    }
+    
+    numbers.forEach((value,index)=>{ // calculating x
         if(Number.isInteger(value))
         {
-            let outputCheck = value-numbers[A]
+            let outputCheck = (value + numbers2[index]) / 2;
             if(Number.isInteger(outputCheck))
             {
-                numbersDX.push(value - numbers[A])
+                numbersX.push((value + numbers2[index]) / 2);
             }
             else
             {
-                numbersDX.push((value - numbers[A]).toFixed(2));
+                numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
                 Mark = true;
             }
         } else{
-            numbersDX.push((value - numbers[A]).toFixed(2))
+            numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
+            Mark = true;
+        }
+    });
+    numbersX.forEach((value,index)=>{ // getting dx
+        if(Number.isInteger(value))
+        {
+            let outputCheck = value-numbersX[A]
+            if(Number.isInteger(outputCheck))
+            {
+                numbersDX.push(value - numbersX[A])
+            }
+            else
+            {
+                numbersDX.push((value - numbersX[A]).toFixed(2));
+                Mark = true;
+            }
+        } else{
+            numbersDX.push((value - numbersX[A]).toFixed(2))
             Mark = true;
         }
     });
@@ -334,9 +404,10 @@ function calculateShortcutMethod()
         } else{
             let toBeAdded = value * 100;
             totalSumF +=toBeAdded;
+            Mark2 = true;
         }
     })
-    numbersFDX.forEach((value)=>{ // adding fx
+    numbersFDX.forEach((value)=>{ // adding fdx
         if(Number.isInteger(value))
         {
             totalSumFDX +=value;
@@ -347,20 +418,144 @@ function calculateShortcutMethod()
     })
     if(Mark === true)
     {
-        totalSumF /= 100;
         totalSumFDX /= 100;
         Mark = false;
     }
-    meanC_SM =  (((numbers[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
+    if(Mark2 === true)
+    {
+        totalSumF /= 100;
+        Mark2= false;
+    }
+    meanC_SM =  (((numbersX[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
     EnterDisable = true;
-    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM);
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
     disableInputBox();
 }
 
 function calculateStepDeviationMethod()
 {
+    if(meanC_SM!== 0)
+    {
+        return
+    }
+    let Mark = false;
+    let Mark2 = false;
+    // getting Key
+    if(numbers.length % 2 === 0 )
+    {
+        A = Math.round(numbers.length /2);
+    } else{
+        A = Math.floor(numbers.length / 2);
+    }
 
+    totalNumber = numbers.length;
+    if (totalNumber === 0)
+    {
+        CalculationError();
+        return
+    }
+
+    // Converting inclusive to exclusive
+    if (numbers2[0] !== numbers[1]) {
+        InclusiveDetected();
+        AdjustmentFactor = (numbers[1] - numbers2[0]) / 2;
+        for (let i = 0; i < totalNumber; i++) {
+            let temp1 = parseFloat(numbers[i].toFixed(2));
+            let temp2 = parseFloat(numbers2[i].toFixed(2));
+            numbers[i] = temp1 - AdjustmentFactor;
+            numbers2[i] = temp2 + AdjustmentFactor;
+        }
+    }
+    
+    numbers.forEach((value,index)=>{ // calculating x
+        if(Number.isInteger(value))
+        {
+            let outputCheck = (value + numbers2[index]) / 2;
+            if(Number.isInteger(outputCheck))
+            {
+                numbersX.push((value + numbers2[index]) / 2);
+            }
+            else
+            {
+                numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
+                Mark = true;
+            }
+        } else{
+            numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
+            Mark = true;
+        }
+    });
+    numbersX.forEach((value,index)=>{ // getting dx
+        if(Number.isInteger(value))
+        {
+            let outputCheck = value-numbersX[A]
+            if(Number.isInteger(outputCheck))
+            {
+                numbersDX.push(value - numbersX[A])
+            }
+            else
+            {
+                numbersDX.push((value - numbersX[A]).toFixed(2));
+                Mark = true;
+            }
+        } else{
+            numbersDX.push((value - numbersX[A]).toFixed(2))
+            Mark = true;
+        }
+    });
+    numbersF.forEach((value,index)=>{ // calculating fdx
+        if(Number.isInteger(value))
+        {
+            let outputCheck = value * numbersDX[index];
+            if(Number.isInteger(outputCheck))
+            {
+                numbersFDX.push(value * numbersDX[index]);
+            }
+            else
+            {
+                numbersFDX.push((value * numbersDX[index]).toFixed(2));
+                Mark = true;
+            }
+        } else{
+            numbersFDX.push((value * numbersDX[index]).toFixed(2));
+            Mark = true;
+        }
+    })
+    numbersF.forEach((value)=>{ // adding F
+        if(Number.isInteger(value))
+        {
+            totalSumF +=value;
+        } else{
+            let toBeAdded = value * 100;
+            totalSumF +=toBeAdded;
+            Mark2 = true;
+        }
+    })
+    numbersFDX.forEach((value)=>{ // adding fdx
+        if(Number.isInteger(value))
+        {
+            totalSumFDX +=value;
+        } else{
+            let toBeAdded = value * 100;
+            totalSumFDX +=toBeAdded;
+        }
+    })
+    if(Mark === true)
+    {
+        totalSumFDX /= 100;
+        Mark = false;
+    }
+    if(Mark2 === true)
+    {
+        totalSumF /= 100;
+        Mark2= false;
+    }
+    meanC_SM =  (((numbersX[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
+    EnterDisable = true;
+    changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,meanC_SM,meanC_SDM);
+    document.querySelector('.result').style.opacity = 1;
+    disableInputBox();
 }
 
 // Showing result
@@ -373,7 +568,7 @@ function changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanC_DM,mean
     } else if(filename=== 'conti-shortcut-method.html')
     {
         ShortcutMethod();
-        resultShortcutMethod()
+        resultShortcutMethod(A,totalNumber,totalSumFDX,totalSumF,meanC_SM)
     } else if(filename === 'conti-step-deviation-method.html')
     {
         StepDeviationMethod();
@@ -397,10 +592,10 @@ function resultDirectMethod(totalSumFX,totalSumF,meanC_DM)
 }
 
 // Showing result for Shortcut method
-function resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanC_SM)
+function resultShortcutMethod(A,totalNumber,totalSumFDX,totalSumF,meanC_SM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>A = ${numbers[A]} <span style="font-size: 10px;">[Key]</span> 
+    <strong>A = ${numbersX[A]} <span style="font-size: 10px;">[Key]</span> 
     <br>
     &sum;FDX = ${totalSumFDX} <span style="font-size: 10px;">[Sum Of FDX]</span> 
     <br>
