@@ -388,10 +388,53 @@ function ClearError(){
 }
 
 // Javascript for navigating to home page
-document.querySelector('.header-title').addEventListener('click',()=>{
+document.querySelector('.title-of-page-in-second-style').addEventListener('click',()=>{
     window.open('index.html',"_self");
 })
 document.querySelector('.header-icon').addEventListener('click',()=>{
     window.open('index.html',"_self");
 })
 
+
+// Hamburger
+const hamburger = document.querySelector('.ham-burger');
+const mainMenu = document.querySelector('.hide');
+hamburger.addEventListener('click',() =>{
+    hamburger.classList.toggle('show');
+    mainMenu.classList.toggle('hide');
+})
+
+//theme changer
+let themeSelector = localStorage.getItem('themeSelector'); // it takes string
+themeSelector = themeSelector ? themeSelector === 'true' : true; // so we compare if its a actual string that is true then it will assign boolean value true
+
+getCurrentTheme();
+
+function getCurrentTheme() {
+    if (themeSelector === true) {
+        const stylesheetToUpdate = "style/pages.css";
+        document.querySelector(".title-of-page-in-second-style").textContent = ``;
+        document.querySelector(".styleSheet").setAttribute("href", stylesheetToUpdate);
+    } else {
+        const stylesheetToUpdate = "style/pages2.css";
+        document.querySelector(".title-of-page-in-second-style").textContent = `Statistics Calculator by Mohd Uvaish`;
+        document.querySelector(".styleSheet").setAttribute("href", stylesheetToUpdate);
+    }
+}
+
+document.querySelector('.changeTheme').addEventListener('click', () => {
+    let currentStyleSheet = document.querySelector(".styleSheet").getAttribute("href");
+    let newStyleSheet;
+    if (currentStyleSheet === "style/pages.css") {
+        newStyleSheet = "style/pages2.css";
+        document.querySelector(".title-of-page-in-second-style").textContent = `Statistics Calculator by Mohd Uvaish`;
+        themeSelector = false;
+    } else {
+        newStyleSheet = "style/pages.css";
+        document.querySelector(".title-of-page-in-second-style").textContent = ``;
+        themeSelector = true;
+    }
+    // Update local storage with the new theme selection
+    localStorage.setItem('themeSelector', themeSelector);
+    document.querySelector(".styleSheet").setAttribute("href", newStyleSheet);
+});

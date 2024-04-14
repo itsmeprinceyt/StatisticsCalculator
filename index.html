@@ -9,12 +9,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Statistics Calculator</title>
-    <link rel="stylesheet" href="style/style.css" type="text/css">
+    <link rel="stylesheet" href="style/style.css" id="styleSheet">
 </head>
 <body>
     <div class="header">
         <img src="images/homeBlack.png" class="header-icon">
-        <h1></h1>
+        <h1 class="title-of-page-in-second-style"></h1>
         <img src="images/Hamburger-black.png" class="ham-burger">
     </div>
     <div class="menu hide">
@@ -32,11 +32,22 @@
             <li><a href="conti-shortcut-method.html">Shortcut Method</a></li>
             <li><a href="conti-step-deviation-method.html">Step Deviation Method</a></li>
             <li></li>
-            <li><a href="https://github.com/itsmeprinceyt" target="_blank" style="color: rgb(0, 179, 255);">GitHub Profile</a></li>
-            <li><a href="https://github.com/itsmeprinceyt/StatisticsCalculator" target="_blank" style="color: rgb(0, 179, 255);">GitHub Repository</a></li>
+            <li>
+                <a href="https://github.com/itsmeprinceyt" target="_blank" style="color: rgb(0, 179, 255);">
+                    <button class="buttonsInMenu">Github Profile Theme</button>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/itsmeprinceyt/StatisticsCalculator" target="_blank" style="color: rgb(0, 179, 255);">
+                    <button class="buttonsInMenu">Github Repository</button>
+                </a>
+            </li>
+            <li>
+                <button class="changeTheme">Change Theme</button>
+            </li>
         </ul>
     </div>
-    <div class="MEGACONTAINER">
+    <div class="MEGACONTAINER first-stylesheet-html">
         <div class="page1">
             <div class="head">
                 <h1>Statistics Mean Calculator</h1>
@@ -80,6 +91,67 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="second-stylesheet-html" style="display: none;">
+        <div class="main main1">
+            <h1 class="data-type1">Individual Data</h1>
+            <div class="data-box">
+                <div>
+                    <p class="title">Direct Method</p>
+                    <p class="description">Calculate Individual Data using Direct Method</p>
+                </div>
+                <button class="select-button js-select-button">Select</button>
+            </div>
+            <div class="data-box">
+                <div>
+                    <p class="title">Shortcut Method</p>
+                    <p class="description">Calculate Individual Data using Shortcut Method</p>
+                </div>
+                <button class="select-button js-select-button">Select</button>
+            </div>
+        </div>
+        <div class="main main2">
+            <h1 class="data-type2">Discrete Data</h1>
+            <div class="data-box">
+                <div>
+                    <p class="title">Direct Data</p>
+                    <p class="description">Calculate Discrete Data using Direct Method</p>
+                </div>
+                <button class="select-button js-select-button">Select</button>
+            </div>
+            <div class="data-box">
+                <div>
+                    <p class="title">Shortcut Method</p>
+                    <p class="description">Calculate Discrete Data using Shortcut Method</p>
+                </div>
+                <button class="select-button js-select-button">Select</button>
+            </div>
+        </div>
+        <div class="main main3">
+            <h1 class="data-type3">Continuous Data </h1>
+            <div class="data-box">
+                <div>
+                    <p class="title">Direct Method</p>
+                    <p class="description">Calculate Continuous Data using Direct Method</p>
+                </div>
+                <button class="select-button js-select-button">Select</button>
+            </div>
+            <div class="data-box">
+                <div>
+                    <p class="title">Shortcut Method</p>
+                    <p class="description">Calculate Continuous Data using Direct Method</p>
+                </div>
+                <button class="select-button js-select-button">Select</button>
+            </div>
+            <div class="data-box">
+                <div>
+                    <p class="title">Step Deviation Method</p>
+                    <p class="description">Calculate Continuous Data using Step Deviation  Method
+                </div></p>
+                <button class="select-button js-select-button">Select</button>
+            </div>
+        </div>
+        <div style="opacity: 0; height: 100px;"></div>
     </div>
     <script src="script/script.js"></script>
 </body>
