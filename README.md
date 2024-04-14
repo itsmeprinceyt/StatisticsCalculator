@@ -5,7 +5,7 @@ This is a Statistics Mean Calculator that can calculate any statistical data pro
 - Continuous Data
 
 You can use this web application using the link below:
-- https://itsmeprinceyt.github.io/TapCount/
+- https://itsmeprinceyt.github.io/StatisticsCalculator/
 
 Made using:
 - HTML
