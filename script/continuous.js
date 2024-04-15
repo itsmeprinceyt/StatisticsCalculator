@@ -198,7 +198,7 @@ function StepDeviationMethod()
             <td>${numbersF[index]}</td>
             <td>${numbersX[index]}</td>
             <td>${numbersDX[index]}</td>
-            <td>${numbersD_}</td>
+            <td>${numbersD_[index]}</td>
             <td>${numbersFD_[index]}</td>
         </tr>`;
     })
@@ -479,11 +479,9 @@ function calculateStepDeviationMethod()
             else
             {
                 numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
-                Mark = true;
             }
         } else{
             numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
-            Mark = true;
         }
     });
     numbersX.forEach((value,index)=>{ // getting dx
@@ -497,29 +495,77 @@ function calculateStepDeviationMethod()
             else
             {
                 numbersDX.push((value - numbersX[A]).toFixed(2));
-                Mark = true;
             }
         } else{
             numbersDX.push((value - numbersX[A]).toFixed(2))
-            Mark = true;
         }
     });
-    numbersF.forEach((value,index)=>{ // calculating fdx
+    function gcd(a,b) // mini driver code
+    {
+        while(b)
+        {
+            let temp=b;
+            b=a%b;
+            a=temp;
+        }
+        return a;
+    }
+    function findingGCD(numbersDX) // main CHF finding which will return a CHF
+    {
+        let Positive_numbersDX = [...numbersDX];
+        Positive_numbersDX.forEach((value,index)=> // making all numbers in the array positive
+        {
+            if(value<0)
+            {
+                Positive_numbersDX[index] = value * -1;
+            }else{
+                Positive_numbersDX[index] = value;
+            }
+        })
+        let count = Positive_numbersDX.length;
+        result = Positive_numbersDX[0]
+        for(let i=0;i<Positive_numbersDX.length;i++)
+        {
+            
+            result =gcd(result,Positive_numbersDX[i])
+        }
+        return result;
+    }
+    // calculating common highest factor
+    I = findingGCD(numbersDX);
+    // now we have CHF
+
+    numbersDX.forEach((value,index)=>{ // calculating d'
         if(Number.isInteger(value))
         {
-            let outputCheck = value * numbersDX[index];
+            let outputCheck = numbersDX[index] / I;
             if(Number.isInteger(outputCheck))
             {
-                numbersFDX.push(value * numbersDX[index]);
+                numbersD_.push(numbersDX[index] / I);
             }
             else
             {
-                numbersFDX.push((value * numbersDX[index]).toFixed(2));
-                Mark = true;
+                numbersD_.push((numbersDX[index] / I).toFixed(2));
             }
         } else{
-            numbersFDX.push((value * numbersDX[index]).toFixed(2));
-            Mark = true;
+            numbersD_.push((numbersDX[index] / I).toFixed(2));
+        }
+    })
+    
+    numbersF.forEach((value,index)=>{ // calculating fd'
+        if(Number.isInteger(value))
+        {
+            let outputCheck = value * numbersD_[index];
+            if(Number.isInteger(outputCheck))
+            {
+                numbersFD_.push(value * numbersD_[index]);
+            }
+            else
+            {
+                numbersFD_.push((value * numbersD_[index]).toFixed(2));
+            }
+        } else{
+            numbersFD_.push((value * numbersD_[index]).toFixed(2));
         }
     })
     numbersF.forEach((value)=>{ // adding F
@@ -529,29 +575,36 @@ function calculateStepDeviationMethod()
         } else{
             let toBeAdded = value * 100;
             totalSumF +=toBeAdded;
+            Mark = true;
+        }
+    })
+    numbersFD_.forEach((value)=>{ // adding fd'
+        if(Number.isInteger(value))
+        {
+            totalSumFD_ +=value;
+        } else{
+            let toBeAdded = value * 100;
+            totalSumFD_ +=toBeAdded;
             Mark2 = true;
         }
     })
-    numbersFDX.forEach((value)=>{ // adding fdx
-        if(Number.isInteger(value))
-        {
-            totalSumFDX +=value;
-        } else{
-            let toBeAdded = value * 100;
-            totalSumFDX +=toBeAdded;
-        }
-    })
-    if(Mark === true)
-    {
-        totalSumFDX /= 100;
-        Mark = false;
-    }
     if(Mark2 === true)
     {
-        totalSumF /= 100;
-        Mark2= false;
+        totalSumFD_ /= 100;
+        Mark = false;
     }
-    meanC_SDM =  (((numbersX[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
+    if(Mark === true)
+    {
+        totalSumF /= 100;
+        Mark= false;
+    }
+    meanC_SDM =  (
+        (
+            ((numbersX[A] + totalSumFD_ / totalSumF ) * I)
+             * 100
+        )
+        /100)
+        .toFixed(2);
     EnterDisable = true;
     changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,I,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
@@ -623,6 +676,7 @@ function resultStepDeviationMethod(A,totalNumber,totalSumFD_,totalSumF,I,meanC_S
     <strong>Formula:  x̄ = A + (&sum;FD'/&sum;F) * i</strong>`;
     document.querySelector('.pre-mean').innerHTML = `<strong>Mean: ${meanC_SDM}</strong>`;
 }
+
 // Javascript to clear all lists
 function clearEverything()
 {
