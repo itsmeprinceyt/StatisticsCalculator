@@ -317,6 +317,8 @@ function calculateShortcutMethod()
     }
     let Mark = false;
     let Mark2 = false;
+    let Mark3 = false;
+    let isIntorFloat = false;
     // getting Key
     if(numbers.length % 2 === 0 )
     {
@@ -351,15 +353,18 @@ function calculateShortcutMethod()
             if(Number.isInteger(outputCheck))
             {
                 numbersX.push((value + numbers2[index]) / 2);
+                isIntorFloat = true;
             }
             else
             {
                 numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
                 Mark = true;
+                isIntorFloat = false;
             }
         } else{
             numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
             Mark = true;
+            isIntorFloat = false;
         }
     });
     numbersX.forEach((value,index)=>{ // getting dx
@@ -415,9 +420,10 @@ function calculateShortcutMethod()
         } else{
             let toBeAdded = value * 100;
             totalSumFDX +=toBeAdded;
+            Mark3 = true;
         }
     })
-    if(Mark === true)
+    if(Mark3 === true)
     {
         totalSumFDX /= 100;
         Mark = false;
@@ -427,7 +433,27 @@ function calculateShortcutMethod()
         totalSumF /= 100;
         Mark2= false;
     }
-    meanC_SM =  (((numbersX[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
+    let temp;
+    if(isIntorFloat === true)
+    {
+        temp = parseInt(numbersX[A]);
+        A = temp;
+        meanC_SM =  (((A + totalSumFDX / totalSumF) * 100)/100).toFixed(2);
+    }
+    else if(isIntorFloat === false)
+    {
+        temp = numbersX[A];
+        A = temp;
+        A *=100;
+        totalSumFDX *=100;
+        totalSumF *=100;
+        meanC_SM =  ((A + totalSumFDX / totalSumF)/100).toFixed(2);
+        A /=100;
+        totalSumFDX /=100;
+        totalSumF /=100;
+        A = temp;
+    }
+    isIntorFloat = false;
     EnterDisable = true;
     changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,I,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
@@ -598,13 +624,9 @@ function calculateStepDeviationMethod()
         totalSumF /= 100;
         Mark= false;
     }
-    meanC_SDM =  (
-        (
-            ((numbersX[A] + totalSumFD_ / totalSumF ) * I)
-             * 100
-        )
-        /100)
-        .toFixed(2);
+    let temp = parseInt(numbersX[A]);
+    A = temp;
+    meanC_SDM =  (((A +(totalSumFD_ / totalSumF)*I) * 100)/100).toFixed(2);
     EnterDisable = true;
     changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,I,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
@@ -648,7 +670,7 @@ function resultDirectMethod(totalSumFX,totalSumF,meanC_DM)
 function resultShortcutMethod(A,totalNumber,totalSumFDX,totalSumF,meanC_SM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>A = ${numbersX[A]} <span style="font-size: 10px;">[Key]</span> 
+    <strong>A = ${A} <span style="font-size: 10px;">[Key]</span> 
     <br>
     &sum;FDX = ${totalSumFDX} <span style="font-size: 10px;">[Sum Of FDX]</span> 
     <br>
@@ -663,7 +685,7 @@ function resultShortcutMethod(A,totalNumber,totalSumFDX,totalSumF,meanC_SM)
 function resultStepDeviationMethod(A,totalNumber,totalSumFD_,totalSumF,I,meanC_SDM)
 {
     document.querySelector('.result').innerHTML = `
-    <strong>A = ${numbersX[A]} <span style="font-size: 10px;">[Key]</span> 
+    <strong>A = ${A} <span style="font-size: 10px;">[Key]</span> 
     <br>
     <strong>I = ${I} <span style="font-size: 10px;">[Common Highest Factor]</span> 
     <br>

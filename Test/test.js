@@ -1,4 +1,17 @@
-function gcd(a,b) // mini driver code
+A = 45;
+totalSumFD_ = 54;
+totalSumF = 80;
+I = 10;
+meanC_SDM =  (
+    (
+        (A + 
+            (totalSumFD_ / totalSumF)*I
+        ) * 100
+    )
+    /100)
+    .toFixed(2);
+console.log(meanC_SDM);
+/*function gcd(a,b) // mini driver code
 {
     while(b)
     {
@@ -19,7 +32,7 @@ function findingGCD(myNumbers) // main CHF finding which will return a CHF
     return result;
 }
 const myNumbers = [-30,-20,-10,0,10,20,30,40];
-console.log(`${findingGCD(myNumbers)}`);
+console.log(`${findingGCD(myNumbers)}`);*/
 /*
 function Main()
 {
