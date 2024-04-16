@@ -256,7 +256,7 @@ function resultShortcutMethod(A,totalNumber,totalSumDX,meanSM)
 // Javascript to clear all lists
 function clearEverything()
 {
-    if (numbers.length=== 0) {ClearError();}
+    if (numbers.length=== 0) {ClearError(); return}
     numbers.splice(0,totalNumber);
     numbersDX.splice(0,totalNumber);
     A = 0;

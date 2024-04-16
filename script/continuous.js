@@ -78,12 +78,10 @@ function takingValue() {
     FrequencyDigit = Number(classInterval[1]);
     if(isNaN(_1stInterval) || isNaN(_2ndInterval) || isNaN(FrequencyDigit) )
     {
-        clearEverything();
         ClassIntervalError();
         return
     }
     if (InputBar.value === '') {
-        clearEverything();
         ClassIntervalError();
         return;
     }
@@ -426,32 +424,27 @@ function calculateShortcutMethod()
     if(Mark3 === true)
     {
         totalSumFDX /= 100;
-        Mark = false;
+        Mark3 = false;
     }
     if(Mark2 === true)
     {
         totalSumF /= 100;
         Mark2= false;
     }
-    let temp;
+    let temp = 0;
     if(isIntorFloat === true)
     {
+        meanC_SM = 0;
         temp = parseInt(numbersX[A]);
         A = temp;
         meanC_SM =  (((A + totalSumFDX / totalSumF) * 100)/100).toFixed(2);
     }
     else if(isIntorFloat === false)
     {
-        temp = numbersX[A];
+        meanC_SM = 0;
+        temp = parseFloat(numbersX[A]);
         A = temp;
-        A *=100;
-        totalSumFDX *=100;
-        totalSumF *=100;
-        meanC_SM =  ((A + totalSumFDX / totalSumF)/100).toFixed(2);
-        A /=100;
-        totalSumFDX /=100;
-        totalSumF /=100;
-        A = temp;
+        meanC_SM =  (A + totalSumFDX / totalSumF).toFixed(2);
     }
     isIntorFloat = false;
     EnterDisable = true;
@@ -468,6 +461,8 @@ function calculateStepDeviationMethod()
     }
     let Mark = false;
     let Mark2 = false;
+    let Mark3 = false;
+    let isIntorFloat = false;
     // getting Key
     if(numbers.length % 2 === 0 )
     {
@@ -501,13 +496,18 @@ function calculateStepDeviationMethod()
             if(Number.isInteger(outputCheck))
             {
                 numbersX.push((value + numbers2[index]) / 2);
+                isIntorFloat = true;
             }
             else
             {
                 numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
+                Mark = true;
+                isIntorFloat = false;
             }
         } else{
             numbersX.push(((value + numbers2[index]) / 2).toFixed(2));
+            Mark = true;
+            isIntorFloat = false;
         }
     });
     numbersX.forEach((value,index)=>{ // getting dx
@@ -521,9 +521,11 @@ function calculateStepDeviationMethod()
             else
             {
                 numbersDX.push((value - numbersX[A]).toFixed(2));
+                Mark = true;
             }
         } else{
-            numbersDX.push((value - numbersX[A]).toFixed(2))
+            numbersDX.push((value - numbersX[A]).toFixed(2));
+            Mark = true;
         }
     });
     function gcd(a,b) // mini driver code
@@ -601,7 +603,7 @@ function calculateStepDeviationMethod()
         } else{
             let toBeAdded = value * 100;
             totalSumF +=toBeAdded;
-            Mark = true;
+            Mark2 = true;
         }
     })
     numbersFD_.forEach((value)=>{ // adding fd'
@@ -611,22 +613,36 @@ function calculateStepDeviationMethod()
         } else{
             let toBeAdded = value * 100;
             totalSumFD_ +=toBeAdded;
-            Mark2 = true;
+            Mark3 = true;
         }
     })
-    if(Mark2 === true)
+    if(Mark3 === true)
     {
         totalSumFD_ /= 100;
-        Mark = false;
+        Mark3 = false;
     }
-    if(Mark === true)
+    if(Mark2 === true)
     {
         totalSumF /= 100;
-        Mark= false;
+        Mark2= false;
     }
-    let temp = parseInt(numbersX[A]);
-    A = temp;
-    meanC_SDM =  (((A +(totalSumFD_ / totalSumF)*I) * 100)/100).toFixed(2);
+    let  = 0;
+    if(isIntorFloat === true)
+    {
+        meanC_SDM = 0;
+        console.log(`Control has gone to A`)
+        temp = parseInt(numbersX[A]);
+        A = temp;
+        meanC_SDM = (A + (totalSumFD_ / totalSumF) * I).toFixed(2);
+    }
+    else if(isIntorFloat === false)
+    {
+        meanC_SDM = 0;
+        temp = parseFloat(numbersX[A]);
+        A = temp;
+        meanC_SDM = (A + (totalSumFD_ / totalSumF) * I).toFixed(2);
+    }
+    isIntorFloat = false;
     EnterDisable = true;
     changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,I,meanC_DM,meanC_SM,meanC_SDM);
     document.querySelector('.result').style.opacity = 1;
@@ -702,7 +718,7 @@ function resultStepDeviationMethod(A,totalNumber,totalSumFD_,totalSumF,I,meanC_S
 // Javascript to clear all lists
 function clearEverything()
 {
-    if (numbers.length=== 0) {ClearError();}
+    if (numbers.length=== 0) {ClearError(); return}
     numbers.splice(0,totalNumber);
     numbers2.splice(0,totalNumber);
     numbersX.splice(0,totalNumber);
@@ -738,6 +754,7 @@ function clearEverything()
     document.querySelector('.pre-mean').innerHTML = ``;
     document.querySelector('.result').style.opacity = 0;
     document.querySelector('.js-enter-input').disabled = false;
+    ClearDone();
 }
 
 // Disable input box after clicking Calculate
@@ -761,6 +778,12 @@ function CalculationError(){
 }
 function ClearError(){
     document.querySelector('.error').textContent = `Clear Error: No data exists, cannot clear ...`;
+    setTimeout(()=>{
+        document.querySelector('.error').innerHTML =``;
+    },4000);
+}
+function ClearDone(){
+    document.querySelector('.error').textContent = `Data is cleared successfully ...`;
     setTimeout(()=>{
         document.querySelector('.error').innerHTML =``;
     },4000);

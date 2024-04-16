@@ -271,18 +271,19 @@ function calculateShortcutMethod()
             Mark2 = true;
         }
     })
-    numbersFDX.forEach((value)=>{ // adding fx
+    numbersFDX.forEach((value)=>{ // adding fdx
         if(Number.isInteger(value))
         {
             totalSumFDX +=value;
         } else{
             let toBeAdded = value * 100;
             totalSumFDX +=toBeAdded;
+            Mark = true;
         }
     })
     if(Mark === true)
     {
-        totalSumFX /= 100;
+        totalSumFDX /= 100;
         Mark = false;
     }
     if(Mark2 === true)
@@ -291,6 +292,10 @@ function calculateShortcutMethod()
         Mark2= false;
     }
     meanD_SM =  (((numbers[A] + totalSumFDX / totalSumF ) * 100 )/100).toFixed(2);
+    if(!Number.isInteger(totalSumFDX)) // if fdx is float then it will fix its decimal point to 2. otherwise if its a normal integer then it won't have any changed made.
+    {
+        totalSumFDX = totalSumFDX.toFixed(2);
+    }
     EnterDisable = true;
     changeData(A,totalSumF,totalSumFX,totalSumFDX,totalNumber,meanD_DM,meanD_SM);
     document.querySelector('.result').style.opacity = 1;
@@ -346,7 +351,7 @@ function resultShortcutMethod(A,totalNumber,totalSumF,totalSumFDX,meanD_SM)
 // Javascript to clear all lists
 function clearEverything()
 {
-    if (numbers.length=== 0) {ClearError();}
+    if (numbers.length=== 0) {ClearError(); return}
     numbers.splice(0,totalNumber);
     numbersF.splice(0,totalNumber);
     numbersFX.splice(0,totalNumber);
