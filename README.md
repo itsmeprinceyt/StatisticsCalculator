@@ -11,3 +11,6 @@ Made using:
 - HTML
 - CSS
 - Javascript
+
+Source code which was written by me in C++
+- https://github.com/itsmeprinceyt/statistics_calculator
