@@ -270,6 +270,12 @@ function calculateDirectMethod()
             Mark = true;
         }
     });
+    if(Mark === true) // if any array is detected having float value. convert all the values of that array to float to avoid adding them in future
+    {
+        numbersFX.forEach((value,index)=>{
+            numbersFX[index] = parseFloat(value).toFixed(2);
+        })
+    }
     numbersF.forEach((value)=>{ // adding F
         if(Number.isInteger(value))
         {
@@ -287,6 +293,7 @@ function calculateDirectMethod()
         } else{
             let toBeAdded = value * 100;
             totalSumFX +=toBeAdded;
+            Mark = true;
         }
     })
     if(Mark === true)
@@ -401,6 +408,12 @@ function calculateShortcutMethod()
             Mark = true;
         }
     })
+    if(Mark === true) // if any array is detected having float value. convert all the values of that array to float to avoid adding them in future
+    {
+        numbersFDX.forEach((value,index)=>{
+            numbersFDX[index] = parseFloat(value).toFixed(2);
+        })
+    }
     numbersF.forEach((value)=>{ // adding F
         if(Number.isInteger(value))
         {
@@ -510,6 +523,12 @@ function calculateStepDeviationMethod()
             isIntorFloat = false;
         }
     });
+    if(Mark === true) // if any array is detected having float value. convert all the values of that array to float to avoid adding them in future
+    {
+        numbersX.forEach((value,index)=>{
+            numbersX[index] = parseFloat(value).toFixed(2);
+        })
+    }
     numbersX.forEach((value,index)=>{ // getting dx
         if(Number.isInteger(value))
         {
@@ -591,11 +610,19 @@ function calculateStepDeviationMethod()
             else
             {
                 numbersFD_.push((value * numbersD_[index]).toFixed(2));
+                Mark = true;
             }
         } else{
             numbersFD_.push((value * numbersD_[index]).toFixed(2));
+            Mark = true;
         }
     })
+    if(Mark === true) // if any array is detected having float value. convert all the values of that array to float to avoid adding them in future
+    {
+        numbersFD_.forEach((value,index)=>{
+            numbersFD_[index] = parseFloat(value).toFixed(2);
+        })
+    }
     numbersF.forEach((value)=>{ // adding F
         if(Number.isInteger(value))
         {
